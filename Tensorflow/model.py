@@ -1,7 +1,7 @@
 from tensorflow.keras.layers import Conv2D, UpSampling2D, LeakyReLU, Concatenate
 from tensorflow.keras import Model
 from tensorflow.keras.applications import DenseNet169
-
+import pdb
 class UpscaleBlock(Model):
     def __init__(self, filters, name):      
         super(UpscaleBlock, self).__init__()
@@ -40,13 +40,17 @@ class Decoder(Model):
         self.up4 = UpscaleBlock(filters=decode_filters//16, name='up4')        
         self.conv3 = Conv2D(filters=1, kernel_size=3, strides=1, padding='same', name='conv3')       
 
-    def call(self, features):        
+    def call(self, features):     
+        # for i in range(len(features)):
+        #     print(f'{i}: {features[i].shape}')
         x, pool1, pool2, pool3, conv1 = features[0], features[1], features[2], features[3], features[4]
         up0 = self.conv2(x)        
         up1 = self.up1([up0, pool3])        
         up2 = self.up2([up1, pool2])        
         up3 = self.up3([up2, pool1])        
-        up4 = self.up4([up3, conv1])        
+        up4 = self.up4([up3, conv1])   
+        
+        #print(f'up0: {up0.shape}, up1: {up1.shape}, up2: {up2.shape}, up3: {up3.shape}, up4: {up4.shape}, conv3: {self.conv3(up4).shape}')     
         return self.conv3( up4 )
     
 class DepthEstimate(Model):
@@ -57,4 +61,5 @@ class DepthEstimate(Model):
         print('\nModel created.')
 
     def call(self, x):
+        
         return self.decoder( self.encoder(x) )

@@ -8,7 +8,7 @@ import torch.nn.utils as utils
 import torchvision.utils as vutils    
 from tensorboardX import SummaryWriter
 
-from model import Model
+from model import PTModel
 from loss import ssim
 from data import getTrainingTestingData
 from utils import AverageMeter, DepthNorm, colorize
@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
 
     # Create model
-    model = Model().cuda()
+    model = PTModel().cuda()
     print('Model created.')
 
     # Training parameters

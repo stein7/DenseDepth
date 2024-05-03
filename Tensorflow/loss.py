@@ -2,7 +2,7 @@ import tensorflow as tf
 import tensorflow.keras.backend as K
 
 def depth_loss_function(y_true, y_pred, theta=0.1, maxDepthVal=1000.0/10.0):
-    
+    print(f'y_true {tf.reduce_mean(y_true)} , {tf.shape(y_true)}, y_pred {tf.reduce_mean(y_pred)} , {tf.shape(y_pred)}')
     # Point-wise depth
     l_depth = K.mean(K.abs(y_pred - y_true), axis=-1)
 

@@ -1,14 +1,14 @@
 import numpy as np
 from zipfile import ZipFile
 from io import BytesIO
-
+import pdb
 # Load test data
 def load_test_data():    
     print('Loading test data...', end='')
     def extract_zip(input_zip):
         input_zip=ZipFile(input_zip)
         return {name: input_zip.read(name) for name in input_zip.namelist()}
-    data = extract_zip('nyu_test.zip')
+    data = extract_zip('/home/sslunder0/project/Datasets/NYU-V2/nyu_test.zip')
     
     rgb = np.load(BytesIO(data['eigen_test_rgb.npy']))
     depth = np.load(BytesIO(data['eigen_test_depth.npy']))
@@ -56,7 +56,7 @@ def evaluate(model, rgb, depth, crop, batch_size=6):
         log_10 = (np.abs(np.log10(gt)-np.log10(pred))).mean()
 
         return a1, a2, a3, abs_rel, rmse, log_10
-
+    
     depth_scores = np.zeros((6, len(rgb))) # six metrics
 
     bs = batch_size
@@ -73,7 +73,7 @@ def evaluate(model, rgb, depth, crop, batch_size=6):
 
         # Crop based on Eigen et al. crop
         true_y = true_y[:,crop[0]:crop[1]+1, crop[2]:crop[3]+1]
-        pred_y = pred_y[:,crop[0]:crop[1]+1, crop[2]:crop[3]+1]
+        pred_y = pred_y[:,crop[0]:crop[1]+1, crop[2]:crop[3]+1] #[:, 20:460, 24:616]
         pred_y_flip = pred_y_flip[:,crop[0]:crop[1]+1, crop[2]:crop[3]+1]
         
         # Compute errors per image in batch

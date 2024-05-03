@@ -51,7 +51,7 @@ def loadZipToMem(zip_file):
     from zipfile import ZipFile
     input_zip = ZipFile(zip_file)
     data = {name: input_zip.read(name) for name in input_zip.namelist()}
-    nyu2_train = list((row.split(',') for row in (data['data/nyu2_train.csv']).decode("utf-8").split('\n') if len(row) > 0))
+    nyu2_train = list((row.split(',') for row in (data['data/nyu2_train.csv']).decode("utf-8").split('\n') if len(row) > 0)) #
 
     from sklearn.utils import shuffle
     nyu2_train = shuffle(nyu2_train, random_state=0)
@@ -144,7 +144,7 @@ def getDefaultTrainTransform():
     ])
 
 def getTrainingTestingData(batch_size):
-    data, nyu2_train = loadZipToMem('nyu_data.zip')
+    data, nyu2_train = loadZipToMem('/home/sslunder0/project/NNPROJ/dataset/nyu_data.zip') # nyu_data.zip
 
     transformed_training = depthDatasetMemory(data, nyu2_train, transform=getDefaultTrainTransform())
     transformed_testing = depthDatasetMemory(data, nyu2_train, transform=getNoTransform())

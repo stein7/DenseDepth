@@ -6,3 +6,6 @@
 *.jpg
 *.obj
 Tensorflow/data/
+Tensorflow/my_model/
+Tensorflow/training_1/
+Tensorflow/training_3/
